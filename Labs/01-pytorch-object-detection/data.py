@@ -198,7 +198,7 @@ def target_to_tensor(obj: dict):
         A dictionary with 'bboxes' and 'labels' keys, containing PyTorch tensors
         representing bounding boxes and class labels, or None if the input is None.
     """
-    if largest_object is None:
+    if obj is None:
         return None
 
     # Extract bounding box values and convert to tensor
