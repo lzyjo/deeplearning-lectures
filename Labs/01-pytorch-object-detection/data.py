@@ -203,14 +203,14 @@ def target_to_tensor(obj: dict):
 
     # Extract bounding box values and convert to tensor
     bboxes = torch.tensor([
-        largest_object['bndbox']['cx'],
-        largest_object['bndbox']['cy'],
-        largest_object['bndbox']['width'],
-        largest_object['bndbox']['height']
+        obj['bndbox']['cx'],
+        obj['bndbox']['cy'],
+        obj['bndbox']['width'],
+        obj['bndbox']['height']
     ])
 
     # Extract class label and convert to tensor
-    labels = torch.tensor([largest_object['class']])
+    labels = torch.tensor([obj['class']])
 
     return {'bboxes': bboxes, 'labels': labels}
 
