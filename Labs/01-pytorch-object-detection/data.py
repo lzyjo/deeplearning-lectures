@@ -178,7 +178,7 @@ def filter_largest(objects: list):
     #^^^^^^^^^^^^#
     #####    #####
 
-def target_to_tensor(obj: dict):
+def target_to_tensor(largest_object: dict):
     """
     Input :
         obj :{'bndbox': {}, 'class': 5}
@@ -198,19 +198,19 @@ def target_to_tensor(obj: dict):
         A dictionary with 'bboxes' and 'labels' keys, containing PyTorch tensors
         representing bounding boxes and class labels, or None if the input is None.
     """
-    if obj is None:
+    if largest_object is None:
         return None
 
     # Extract bounding box values and convert to tensor
     bboxes = torch.tensor([
-        obj['bndbox']['cx'],
-        obj['bndbox']['cy'],
-        obj['bndbox']['width'],
-        obj['bndbox']['height']
+        largest_object['bndbox']['cx'],
+        largest_object['bndbox']['cy'],
+        largest_object['bndbox']['width'],
+        largest_object['bndbox']['height']
     ])
 
     # Extract class label and convert to tensor
-    labels = torch.tensor([obj['class']])
+    labels = torch.tensor([largest_object['class']])
 
     return {'bboxes': bboxes, 'labels': labels}
 
