@@ -2,10 +2,21 @@ import torch
 from collections import defaultdict
 from tqdm import tqdm
 
+
 def extract_save_features(loader: torch.utils.data.DataLoader,
                         model: torch.nn.Module,
                         device: torch.device,
                         filename: str):
+    """The function extract_save_features saves a dictionary. Within the context of this section, the dictionnary that is saved will have :
+
+For the training set :
+the key ‘features’ with torch tensor of shape (5717, 512, 7, 7)
+the key ‘bboxes’ with torch tensor of shape (5717,4)
+the key ‘labels’ with torch tensor of shape (5717)
+For the validation set :
+the key ‘features’ with torch tensor of shape (5823, 512, 7, 7)
+the key ‘bboxes’ with torch tensor of shape (5823,4)
+the key ‘labels’ with torch tensor of shape (5823)"""
     all_features = []
     all_targets = defaultdict(list)
 

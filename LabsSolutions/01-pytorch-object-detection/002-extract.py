@@ -52,5 +52,15 @@ model = torchvision.models.resnet18(pretrained=True)
 feature_extractor = nn.Sequential(*list(model.children())[:-2])
 feature_extractor.to(device)
 
+"""The function extract_save_features saves a dictionary. Within the context of this section, the dictionnary that is saved will have :
+
+For the training set :
+the key ‘features’ with torch tensor of shape (5717, 512, 7, 7)
+the key ‘bboxes’ with torch tensor of shape (5717,4)
+the key ‘labels’ with torch tensor of shape (5717)
+For the validation set :
+the key ‘features’ with torch tensor of shape (5823, 512, 7, 7)
+the key ‘bboxes’ with torch tensor of shape (5823,4)
+the key ‘labels’ with torch tensor of shape (5823)"""
 utils.extract_save_features(train_loader, feature_extractor, device, 'train.pt')
 utils.extract_save_features(valid_loader, feature_extractor, device, 'valid.pt')
