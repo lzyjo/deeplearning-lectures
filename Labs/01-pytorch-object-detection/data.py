@@ -188,15 +188,31 @@ def target_to_tensor(obj: dict):
                 -  the second with [class]
 
     """
-    #####    #####
-    # TO BE DONE #
-    #vvvvvvvvvvvv#
+    """Converts the largest object's attributes to PyTorch tensors.
 
-    #return {'bboxes': ...,
-    #        'labels': ...
+    Args:
+        largest_object: A dictionary representing the largest object,
+                        containing 'bndbox' and 'class' keys.
 
-    #^^^^^^^^^^^^#
-    #####    #####
+    Returns:
+        A dictionary with 'bboxes' and 'labels' keys, containing PyTorch tensors
+        representing bounding boxes and class labels, or None if the input is None.
+    """
+    if largest_object is None:
+        return None
+
+    # Extract bounding box values and convert to tensor
+    bboxes = torch.tensor([
+        largest_object['bndbox']['cx'],
+        largest_object['bndbox']['cy'],
+        largest_object['bndbox']['width'],
+        largest_object['bndbox']['height']
+    ])
+
+    # Extract class label and convert to tensor
+    labels = torch.tensor([largest_object['class']])
+
+    return {'bboxes': bboxes, 'labels': labels}
 
 
 def cell_idx_of_center(coordinates, num_cells: int):
