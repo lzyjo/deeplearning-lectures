@@ -165,7 +165,14 @@ def filter_largest(objects: list):
     #####    #####
     # TO BE DONE #
     #vvvvvvvvvvvv#
+    if not objects:
+        return None
 
+    def calculate_area(obj):
+        return obj['bndbox']['width'] * obj['bndbox']['height']
+
+    largest_object = max(objects, key=calculate_area)
+    return largest_object
     # return ...
 
     #^^^^^^^^^^^^#
