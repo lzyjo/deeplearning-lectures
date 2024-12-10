@@ -139,6 +139,17 @@ def transform_bbox(bbox: dict, input_image_size: dict, image_transform_params:di
         raise ValueError('invalid image_mode for transform_bbox, got "{}"'.format(image_mode))
     return out_bbox
 
+"""Normalization to [0, 1]:
+
+The instruction emphasizes that these bounding box coordinates (cx, cy, width, height) should always be normalized to lie within the range of 0 to 1. This means:
+
+cx and cy: These values represent the center of the bounding box as a proportion of the image's width and height, respectively. A value of 0.5 for cx means the center is horizontally in the middle of the image.
+width and height: These values represent the width and height of the bounding box as a proportion of the image's width and height, respectively. A value of 0.2 for width means the bounding box is 20% of the image's width.
+Why Normalize?
+
+Consistency: Normalizing ensures that the coordinates are consistent regardless of the original image size. This is important because object detection models are often trained on datasets with images of varying dimensions.
+Model Stability: Normalization helps to stabilize the training process of the model and can improve its performance. This is because the model doesn't have to deal with a wide range of input values."""
+
 
 def filter_largest(objects: list):
     """
@@ -161,10 +172,6 @@ def filter_largest(objects: list):
     {'bndbox': {}, 'class': 5}
 
     """
-
-    #####    #####
-    # TO BE DONE #
-    #vvvvvvvvvvvv#
     if not objects:
         return None
 
@@ -173,12 +180,9 @@ def filter_largest(objects: list):
 
     largest_object = max(objects, key=calculate_area)
     return largest_object
-    # return ...
 
-    #^^^^^^^^^^^^#
-    #####    #####
 
-def target_to_tensor(largest_object: dict):
+def target_to_tensor(obj: dict):
     """
     Input :
         obj :{'bndbox': {}, 'class': 5}
@@ -198,19 +202,19 @@ def target_to_tensor(largest_object: dict):
         A dictionary with 'bboxes' and 'labels' keys, containing PyTorch tensors
         representing bounding boxes and class labels, or None if the input is None.
     """
-    if largest_object is None:
+    if obj is None:
         return None
 
     # Extract bounding box values and convert to tensor
     bboxes = torch.tensor([
-        largest_object['bndbox']['cx'],
-        largest_object['bndbox']['cy'],
-        largest_object['bndbox']['width'],
-        largest_object['bndbox']['height']
+        obj['bndbox']['cx'],
+        obj['bndbox']['cy'],
+        obj['bndbox']['width'],
+        obj['bndbox']['height']
     ])
 
     # Extract class label and convert to tensor
-    labels = torch.tensor([largest_object['class']])
+    labels = torch.tensor([obj['class']])
 
     return {'bboxes': bboxes, 'labels': labels}
 

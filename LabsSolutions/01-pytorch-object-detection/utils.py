@@ -11,7 +11,7 @@ def extract_save_features(loader: torch.utils.data.DataLoader,
                           model: torch.nn.Module,
                           device: torch.device,
                           filename_prefix: str):
-
+     
     with torch.no_grad():
         model.eval()
         batch_idx = 1
@@ -27,7 +27,15 @@ def extract_save_features(loader: torch.utils.data.DataLoader,
                        filename_prefix+"{}.pt".format(batch_idx))
 
             batch_idx += 1
-
+"""The function extract_save_features saves a dictionary. Within the context of this section, the dictionnary that is saved will have :
+For the training set :
+the key ‘features’ with torch tensor of shape (5717, 512, 7, 7)
+the key ‘bboxes’ with torch tensor of shape (5717,4)
+the key ‘labels’ with torch tensor of shape (5717)
+For the validation set :
+the key ‘features’ with torch tensor of shape (5823, 512, 7, 7)
+the key ‘bboxes’ with torch tensor of shape (5823,4)
+the key ‘labels’ with torch tensor of shape (5823)"""
 
 def train(model: torch.nn.Module,
           loader:torch.utils.data.DataLoader,
@@ -306,8 +314,8 @@ import sys
 import time
 import math
 
-_, term_width = os.popen('stty size', 'r').read().split()
-term_width = int(term_width)
+_, term_width = map(int, os.popen('stty size', 'r').read().split())
+term_width = shutil.get_terminal_size().columns
 
 TOTAL_BAR_LENGTH = 65.
 last_time = time.time()
