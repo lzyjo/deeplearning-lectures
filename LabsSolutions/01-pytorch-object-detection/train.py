@@ -104,7 +104,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--tensors',
         type=str,
-        help='Where to find the input tensors. We expect <tensors>/train_xx.pt and <tensors>/valid_xx.pt',
+        help='Where to find the input tensors. We expect <tensors>/train_xx.pt and <tensors>/valid_xx.pt (specify path to where these are stored, not the .py file path itself)',
         required=True
     )
 
