@@ -314,8 +314,7 @@ import sys
 import time
 import math
 
-_, term_width = map(int, os.popen('stty size', 'r').read().split())
-term_width = shutil.get_terminal_size().columns
+term_width = 80
 
 TOTAL_BAR_LENGTH = 65.
 last_time = time.time()
