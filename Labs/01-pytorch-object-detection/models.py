@@ -9,17 +9,20 @@ class SingleBboxHead(nn.Module):
 
     def __init__(self, num_features: int, num_classes: int):
         super(SingleBboxHead, self).__init__()
-        #####    #####
-        # TO BE DONE #
-        #vvvvvvvvvvvv#
 
-        # Head bbox should output 4 numbers for cx, cy, width, height that can lie in [0, 1]
-        self.head_bbox =
-        # Head class should output the logits over the 20 classes
-        self.head_class =
+      # Regression head (bbox)
+        self.head_bbox = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(num_features, 1024),
+            nn.ReLU(),
+            nn.BatchNorm1d(1024),
+            nn.Dropout(0.5),
+            nn.Linear(1024, 4),
+            nn.Sigmoid()  # Constrain output to [0, 1]
+        )
 
-        #^^^^^^^^^^^^#
-        #####    #####
+        # Classification head (class)
+        self.head_class = nn.Linear(num_features, num_classes)
 
     def forward(self, features):
         # We might get feature maps as input
