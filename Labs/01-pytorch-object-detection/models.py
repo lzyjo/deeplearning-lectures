@@ -45,12 +45,12 @@ class MultipleBboxHead(nn.Module):
 
         # The Bbox head outputs 4 x num_box  numbers per grid cell
         # i.e. every grid cell is predicting num_box bounding boxes
-        self.head_bbox = ....
+        #self.head_bbox = ....
 
         # The class head outputs a distribution over the classes
         # and a number which is the probability that the
         # cell contains an object
-        self.head_class =
+        #self.head_class =
 
         #^^^^^^^^^^^^#
         #####    #####
