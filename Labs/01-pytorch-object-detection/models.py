@@ -6,8 +6,6 @@ import torch
 
 
 class SingleBboxHead(nn.Module):
-
- class SingleBboxHead(nn.Module):
     def __init__(self, num_features: int, num_classes: int):
         super(SingleBboxHead, self).__init__()
 
