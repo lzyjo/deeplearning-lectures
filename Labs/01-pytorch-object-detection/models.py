@@ -7,29 +7,30 @@ import torch
 
 class SingleBboxHead(nn.Module):
 
+ class SingleBboxHead(nn.Module):
     def __init__(self, num_features: int, num_classes: int):
         super(SingleBboxHead, self).__init__()
 
-      # Regression head (bbox)
+        # Regression head (bbox)
         self.head_bbox = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(num_features, 1024),
+            nn.Linear(num_features * 7 * 7, 1024),  # Input size: 512x7x7
             nn.ReLU(),
             nn.BatchNorm1d(1024),
             nn.Dropout(0.5),
-            nn.Linear(1024, 4),
+            nn.Linear(1024, 4),  # Output: cx, cy, width, height
             nn.Sigmoid()  # Constrain output to [0, 1]
         )
 
         # Classification head (class)
-        self.head_class = nn.Linear(num_features, num_classes)
+        self.head_class = nn.Linear(num_features * 7 * 7, num_classes) # Input size: 512x7x7, Output size: 20
 
     def forward(self, features):
         # We might get feature maps as input
         # that we need to "linearize"
-        features = features.view(features.size()[0], -1)
+        features = features.view(features.size()[0], -1)  # Flatten the features
 
-        y_bbox  = self.head_bbox(features)
+        y_bbox = self.head_bbox(features)
         y_class = self.head_class(features)
 
         return y_bbox, y_class
